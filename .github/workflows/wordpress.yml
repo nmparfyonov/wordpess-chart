@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Setup SSH
         shell: bash
         run: |
@@ -28,6 +25,5 @@ jobs:
           
       - name: Deploy wordpress
         run: |
-          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "wget https://github.com/nmparfyonov/wordpess-chart/archive/refs/heads/feat/task-5.zip"
-          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "unzip task-5.zip && mv wordpess-chart-feat-task-5 wordpress-chart"
-          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "helm install wordpress wordpress-chart -f wordpress-chart/values.yaml --create-namespace -n wordpress"
+          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "wget https://raw.githubusercontent.com/nmparfyonov/wordpess-chart/refs/heads/feat/task-5/sources/values.yaml"
+          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "helm install wordpress wget https://raw.githubusercontent.com/nmparfyonov/wordpess-chart/refs/heads/feat/task-5/chart/wordpress-chart-0.1.0.tgz -f values.yaml --create-namespace -n wordpress"
