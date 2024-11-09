@@ -1,0 +1,21 @@
+wordpress:
+  image:
+    repository: bitnami/wordpress
+    tag: latest
+  username: username
+  password: password
+  email: admin@example.com
+  blogName: My Blog
+  service:
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080
+
+mysql:
+  enabled: true
+  auth:
+    rootPassword: rootpassword
+    database: wordpress
+    username: wordpress
+    password: wordpresspassword
