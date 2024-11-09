@@ -7,13 +7,12 @@ Helm chart includes wordpress and mysql database.
 * `Helm` installed
 
 ## Installation
-1. Clone this repo with `git clone`.
-1. Edit [values.yaml](./values.yaml). Variables are self-described.
+1. Create [values.yaml](./sources/values.yaml) file. Variables are self-described.
 1. Install chart
     ```bash
-    helm install wordpress wordpress-chart -f wordpress-chart/values.yaml --create-namespace -n wordpress
+    helm install wordpress https://raw.githubusercontent.com/nmparfyonov/wordpess-chart/refs/heads/feat/task-5/chart/wordpress-chart-0.1.0.tgz -f values.yaml --create-namespace -n wordpress
     ```
-1. Get worpress address and port. Commands will be present after chart installation. Example:
+1. Get wordress address and port. Commands will be present after chart installation. Example:
     ```bash
     export NODE_PORT=$(kubectl get --namespace wordpress -o jsonpath="{.spec.ports[0].nodePort}" services wordpress-wordpress)
     export NODE_IP=$(kubectl get nodes --namespace wordpress -o jsonpath="{.items[0].status.addresses[0].address}")
