@@ -1,0 +1,29 @@
+name: Wordpress Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  wordpress-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        shell: bash
+        run: |
+          mkdir -p /home/runner/.ssh/
+          touch /home/runner/.ssh/id_rsa
+          echo -e "${{ secrets.PRIVATE_KEY }}" > /home/runner/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
+          eval `ssh-agent -s`
+          ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{ secrets.BASTION_IP }} >> /home/runner/.ssh/known_hosts
+          
+      - name: Deploy wordpress
+        run: |
+          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "wget https://raw.githubusercontent.com/nmparfyonov/wordpess-chart/refs/heads/feat/task-5/sources/values.yaml"
+          ssh ${{ secrets.AMI_USERNAME }}@${{ secrets.BASTION_IP }} "helm install wordpress https://raw.githubusercontent.com/nmparfyonov/wordpess-chart/refs/heads/feat/task-5/chart/wordpress-chart-0.1.0.tgz -f values.yaml --create-namespace -n wordpress"
